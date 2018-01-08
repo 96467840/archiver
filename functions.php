@@ -32,3 +32,13 @@ function db_connect($db, $connection='default'){
     
     return $mysqli;
 }
+
+// отправить файл или папку на другой сервер
+function store($config, $item){
+
+}
+
+function db_dumps(){
+
+
+}
