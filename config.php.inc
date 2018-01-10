@@ -9,6 +9,8 @@
 	//$config['zip'] = true;
 	//$config['mysqldump'] = 'D:\\xampp\\mysql\\bin\\mysqldump';
 
+	$config['sites'] = './';
+
 	$config['store'] = 'ftp';
 	$config['ftp']['server'] = '2garin.com';
 	$config['ftp']['user'] = 'arch';

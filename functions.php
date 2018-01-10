@@ -2,7 +2,7 @@
 
 function log_mess($message) {
     $fp = fopen ("./logs/" . date("Y_m_d") . ".log", "a");
-    fputs($fp,$message);
+    fputs($fp, $message . "\n");
     fclose($fp);
 }
 
@@ -38,7 +38,7 @@ function store($config, $archive) {
     FTP::upload($archive);
 }
 
-function db_dumps($mysqli, $config, $db, $connection='default') {
+function dbs_dump($mysqli, $config, $db, $connection='default') {
     $skipDBs = ['information_schema', 'mysql', 'performance_schema', 'phpmyadmin'];
     $sql = 'SHOW DATABASES';
     $res = $mysqli->query($sql);
@@ -67,9 +67,40 @@ function db_dumps($mysqli, $config, $db, $connection='default') {
             exec('zip -r ' . $dbname . '.sql.zip ' . $dbname . '.sql');
             @unlink($dbname . '.sql');
             store($config, $dbname . '.sql.zip');
+            @unlink($dbname . '.sql.zip');
         }
     }
     chdir('..');
+}
+
+function sites_dump($config) {
+    $currdir = getcwd();
+    $tmpdir = $currdir . '/tmp/';
+    //echo 'currdir = ' . $currdir . "\n";
+    if ($handle = opendir($config['sites'])) {
+        
+        //echo "Directory handle: $handle\n";
+        //echo "Entries:\n";
+
+        /* This is the correct way to loop over the directory. */
+        while (false !== ($entry = readdir($handle))) {
+            chdir($currdir); // $config['sites'] может быть относительным
+            chdir($config['sites']);
+
+            if (substr($entry, 0,1) == '.') continue;
+            if (!is_dir($entry)) continue;
+            echo "$entry\n";
+
+            exec('zip -r ' . $tmpdir . $entry . '.zip ' . $entry);
+ 
+            chdir($tmpdir);
+            store($config, $entry . '.zip');
+            @unlink($entry . '.zip');
+        }
+    
+        closedir($handle);
+        chdir($currdir);
+    }
 }
 
 class FTP {
@@ -105,7 +136,7 @@ class FTP {
         if (!ftp_chdir(self::$conn_id, self::$config['ftp']['folder']))
             die("Couldn't chdir " . self::$config['ftp']['folder']);
 
-        $dir = date("Y_m_d_H_M");
+        $dir = date("Y_m_d_H_i_s");
 
         @ftp_mkdir(self::$conn_id, $dir);
 
