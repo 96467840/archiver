@@ -8,7 +8,7 @@ $mysqli = db_connect($db);
 FTP::init($config);
 
 //log_mess('Соединение установлено... ' . $mysqli->host_info);
-//dbs_dump($mysqli, $config, $db);
+dbs_dump($mysqli, $config, $db);
 sites_dump($config);
 
 $mysqli->close();
