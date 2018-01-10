@@ -5,3 +5,12 @@
 	$db['default']['password'] = '';
 	$db['default']['database'] = ''; //'' - all DBs
 
+	$config = [];
+	//$config['zip'] = true;
+	//$config['mysqldump'] = 'D:\\xampp\\mysql\\bin\\mysqldump';
+
+	$config['store'] = 'ftp';
+	$config['ftp']['server'] = '2garin.com';
+	$config['ftp']['user'] = 'arch';
+	$config['ftp']['pwd'] = '???';
+	$config['ftp']['folder'] = './';

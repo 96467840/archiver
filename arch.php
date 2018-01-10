@@ -5,6 +5,10 @@ include "functions.php";
 
 $mysqli = db_connect($db);
 
-log_mess('Соединение установлено... ' . $mysqli->host_info);
+FTP::init($config);
+
+//log_mess('Соединение установлено... ' . $mysqli->host_info);
+db_dumps($mysqli, $config, $db);
 
 $mysqli->close();
+FTP::close();
