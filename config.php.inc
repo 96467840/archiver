@@ -9,6 +9,8 @@
 	//$config['zip'] = true;
 	//$config['mysqldump'] = 'D:\\xampp\\mysql\\bin\\mysqldump';
 
+	$config['workdir'] = '/var/www/a/archiver';
+
 	$config['sites'] = './';
 
 	$config['store'] = 'ftp';

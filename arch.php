@@ -3,6 +3,8 @@
 include "config.php";
 include "functions.php";
 
+chdir($config['workdir']);
+
 $mysqli = db_connect($db);
 
 FTP::init($config);
