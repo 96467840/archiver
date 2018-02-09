@@ -3,7 +3,7 @@
 	$db['default']['hostname'] = 'localhost';
 	$db['default']['username'] = 'root';
 	$db['default']['password'] = '';
-	$db['default']['database'] = ''; //'' - all DBs
+	$db['default']['database'] = ''; // '' - all DBs
 
 	$config = [];
 	//$config['zip'] = true;
@@ -18,3 +18,4 @@
 	$config['ftp']['user'] = 'arch';
 	$config['ftp']['pwd'] = '???';
 	$config['ftp']['folder'] = './';
+	$config['ftp']['max'] = 5; // max archives on server. the oldest will be remove

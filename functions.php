@@ -136,12 +136,43 @@ class FTP {
         if (!ftp_chdir(self::$conn_id, self::$config['ftp']['folder']))
             die("Couldn't chdir " . self::$config['ftp']['folder']);
 
+		// remove old folders
+		FTP::removeold();
+
         $dir = date("Y_m_d_H_i_s");
 
         @ftp_mkdir(self::$conn_id, $dir);
 
-        if (!ftp_chdir(self::$conn_id,  $dir))
-            die("Couldn't chdir " . $dir);
+		if (!ftp_chdir(self::$conn_id,  $dir)) die("Couldn't chdir " . $dir);
+    }
+
+	// рекурсии делать не будем считаем что у нас архив это строго папка с файлами (папка с папками уже удалятся не будет)
+    public static function removeold() {
+		$ftp_max = self::$config['ftp']['max'];
+		$dirs = ftp_nlist(self::$conn_id, ".");
+		$curcount = count($dirs);
+		//echo "arhcives: $curcount max:$ftp_max\n";
+
+		if ($curcount < $ftp_max) return; // если уже максимум значит надо удалять (удаление старых делаем перед загрузкой нового архива)
+		//echo "removing " . ($curcount + 1 - $ftp_max) . " archives...\n";
+
+		sort($dirs, SORT_STRING);
+		for ($i = 0; $i < ($curcount + 1 - $ftp_max); $i++) 
+		{
+			$dir = $dirs[$i];
+			echo "removing $dir ...\n";
+			if (!ftp_chdir(self::$conn_id,  $dir)) die("Couldn't chdir " . $dir);
+
+			$files = ftp_nlist(self::$conn_id, ".");
+			foreach ($files as $file)
+			{
+				if (!ftp_delete(self::$conn_id, $file)) die("Couldn't delete " . $dir . '/' . $file);
+			}
+
+			if (!ftp_chdir(self::$conn_id,  '..')) die("Couldn't chdir .." );
+
+			if (!ftp_rmdir(self::$conn_id, $dir)) die("Couldn't rmdir " . $dir);
+		}
     }
 
     public static function close() {
@@ -152,7 +183,7 @@ class FTP {
         $upload = ftp_put(self::$conn_id, $file, $file, FTP_BINARY); 
 
         // check upload status
-        if (!$upload) { 
+        if (!$upload) {
             echo "FTP upload $file has failed!\n";
         } else {
             echo "Uploaded $file\n";
