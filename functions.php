@@ -120,7 +120,7 @@ class FTP {
 
         self::$conn_id = ftp_connect($ftp_server);
 
-        ftp_pasv(self::$conn_id, true) or die("Cannot switch to passive mode");
+        //ftp_pasv(self::$conn_id, true) or die("Cannot switch to passive mode");
 
         // login with username and password
         $login_result = ftp_login(self::$conn_id, $ftp_user_name, $ftp_user_pass);
