@@ -120,6 +120,8 @@ class FTP {
 
         self::$conn_id = ftp_connect($ftp_server);
 
+        ftp_pasv(self::$conn_id, true) or die("Cannot switch to passive mode");
+
         // login with username and password
         $login_result = ftp_login(self::$conn_id, $ftp_user_name, $ftp_user_pass);
 
@@ -130,8 +132,6 @@ class FTP {
         } else {
             //echo "Connected to $ftp_server, for user $ftp_user_name\n";
         }
-
-        ftp_pasv(self::$conn_id, true) or die("Cannot switch to passive mode");
 
         if (!ftp_chdir(self::$conn_id, self::$config['ftp']['folder']))
             die("Couldn't chdir " . self::$config['ftp']['folder']);
