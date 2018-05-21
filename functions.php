@@ -185,8 +185,10 @@ class FTP {
         // check upload status
         if (!$upload) {
             echo "FTP upload $file has failed!\n";
+            log_mess("FTP upload $file has failed!\n");
         } else {
             echo "Uploaded $file\n";
+
         }
     }
 
