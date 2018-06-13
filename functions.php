@@ -145,7 +145,7 @@ class FTP {
         $dir = date("Y_m_d_H_i_s");
 
         $tmp = ftp_nlist(self::$conn_id, "."); echo "\n".implode(',', $tmp)."\n\n";
-
+		sleep(5);
         if (!ftp_mkdir(self::$conn_id, $dir)) die("Couldn't mkdir " . $dir);
 
 		if (!ftp_chdir(self::$conn_id,  $dir)) die("Couldn't chdir " . $dir);
