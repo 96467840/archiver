@@ -19,3 +19,4 @@
 	$config['ftp']['pwd'] = '???';
 	$config['ftp']['folder'] = './';
 	$config['ftp']['max'] = 5; // max archives on server. the oldest will be remove
+	$config['ftp']['removeold'] = false;

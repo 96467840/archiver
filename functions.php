@@ -136,12 +136,15 @@ class FTP {
         if (!ftp_chdir(self::$conn_id, self::$config['ftp']['folder']))
             die("Couldn't chdir " . self::$config['ftp']['folder']);
 
-		// remove old folders
-		FTP::removeold();
+        if (isset(self::$config['ftp']['removeold']) && self::$config['ftp']['removeold'])
+        {
+            // remove old folders
+            FTP::removeold();
+        }
 
         $dir = date("Y_m_d_H_i_s");
 
-        @ftp_mkdir(self::$conn_id, $dir);
+        if (!ftp_mkdir(self::$conn_id, $dir)) die("Couldn't mkdir " . $dir);
 
 		if (!ftp_chdir(self::$conn_id,  $dir)) die("Couldn't chdir " . $dir);
     }
