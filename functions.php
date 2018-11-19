@@ -154,7 +154,7 @@ class FTP {
             FTP::removeold();
         }
 
-        $dir = date("Y_m_d_H_i_s");
+        $dir = date("Y_m_d_H_i_s" . (isset(self::$config['fPostfix']) ? self::$config['fPostfix'] : ''));
 
         //$tmp = ftp_nlist(self::$conn_id, "."); echo "\n".implode(',', $tmp)."\n\n";
 		sleep(5);
