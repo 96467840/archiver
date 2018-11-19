@@ -77,17 +77,29 @@ function sites_dump($config) {
     $currdir = getcwd();
     $tmpdir = $currdir . '/tmp/';
     //echo 'currdir = ' . $currdir . "\n";
-    if ($handle = opendir($config['sites'])) {
-        
+    if ($handle = opendir($config['sites']))
+	{
         //echo "Directory handle: $handle\n";
         //echo "Entries:\n";
 
         /* This is the correct way to loop over the directory. */
-        while (false !== ($entry = readdir($handle))) {
+        while (false !== ($entry = readdir($handle)))
+        {
+            if (substr($entry, 0, 1) == '.') continue;
+
+    		// чутка костыльно
+	    	if (isset($config['check_NOT-HERE_file']) && $config['check_NOT-HERE_file'])
+    		{
+    			if (is_file($config['sites'] . 'admin-utils/' . $entry . '/.NOT-HERE' ) )
+    			{
+	    			echo "skip $entry\n";
+    				continue;
+    			}
+    		}
+
             chdir($currdir); // $config['sites'] может быть относительным
             chdir($config['sites']);
 
-            if (substr($entry, 0,1) == '.') continue;
             if (!is_dir($entry)) continue;
             echo "$entry\n";
 
